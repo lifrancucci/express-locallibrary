@@ -18,22 +18,22 @@ block content
 
     h2(style='font-size: 1.5rem;') Copies 
 
-    each instance in book_instances 
+    each bookinstance in book_instances 
       hr
-      if instance.status == 'Available'
-        p.text-success #{instance.status}
-      else if instance.status == 'Maintenance'
-        p.text-danger #{instance.status}
+      if bookinstance.status == 'Available'
+        p.text-success #{bookinstance.status}
+      else if bookinstance.status == 'Maintenance'
+        p.text-danger #{bookinstance.status}
       else 
-        p.text-warning #{instance.status} 
+        p.text-warning #{bookinstance.status} 
       
-      p #[strong Imprint:] #{instance.imprint} 
+      p #[strong Imprint:] #{bookinstance.imprint} 
 
-      if instance.status != 'Available'
-        p #[strong Due back:] #{instance.due_back_formatted} 
-      
-      p #[strong Id: ] 
-        a(href=instance.url) #{instance._id} 
+      if bookinstance.status != 'Available'
+        p #[strong Due back:] #{bookinstance.due_back_formatted} 
+        
+        p #[strong Id: ] 
+          a(href=bookinstance.url) #{bookinstance._id} 
 
     else 
       p There are no copies of this book in the library.
