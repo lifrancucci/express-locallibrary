@@ -45,6 +45,9 @@ router.get('/authors', author_controller.author_list)
 
 // BOOK ROUTES //
 
+// GET request for list of all Book items
+router.get('/books', book_controller.book_list)
+
 // GET request for creating a Book. NOTE This must come before routes that display Book (uses id)
 router.get('/book/create', book_controller.book_create_get)
 
@@ -66,11 +69,11 @@ router.post('/book/:id/update', book_controller.book_update_post)
 // GET request for one Book
 router.get('/book/:id', book_controller.book_detail)
 
-// GET request for list of all Book items
-router.get('/books', book_controller.book_list)
-
 
 // BOOKINSTANCE ROUTES //
+
+// GET request for list of all BookInstance items
+router.get('/bookinstances', bookinstance_controller.bookinstance_list)
 
 // GET request for creating a BookInstance. NOTE This must come before routes that display BookInstance (uses id)
 router.get('/bookinstance/create', bookinstance_controller.bookinstance_create_get)
@@ -92,9 +95,6 @@ router.post('/bookinstance/:id/update', bookinstance_controller.bookinstance_upd
 
 // GET request for one BookInstance
 router.get('/bookinstance/:id', bookinstance_controller.bookinstance_detail)
-
-// GET request for list of all BookInstance items
-router.get('/bookinstances', bookinstance_controller.bookinstance_list)
 
 
 // GENRE ROUTES //
