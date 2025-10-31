@@ -30,7 +30,7 @@ block content
       p #[strong Imprint:] #{instance.imprint} 
 
       if instance.status != 'Available'
-        p #[strong Due back:] #{instance.due_back} 
+        p #[strong Due back:] #{instance.due_back_formatted} 
       
       p #[strong Id: ] 
         a(href=instance.url) #{instance._id} 
