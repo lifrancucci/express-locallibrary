@@ -5,8 +5,15 @@ const author_controller = require('../controllers/authorController')
 const book_controller = require('../controllers/bookController')
 const bookinstance_controller = require('../controllers/bookinstanceController')
 const genre_controller = require('../controllers/genreController')
+const catalog_controller = require('../controllers/catalogController')
 
 const router = express.Router()
+
+
+// INDEX/CATALOG ROUTE //
+
+// GET catalog home page
+router.get('/', catalog_controller.index)
 
 
 // AUTHOR ROUTES //
@@ -37,9 +44,6 @@ router.get('/authors', author_controller.author_list)
 
 
 // BOOK ROUTES //
-
-// GET catalog home page
-router.get('/', book_controller.index)
 
 // GET request for creating a Book. NOTE This must come before routes that display Book (uses id)
 router.get('/book/create', book_controller.book_create_get)
