@@ -7,16 +7,16 @@ block content
     ul 
       each bookinstance in bookinstance_list
         li 
-          a(href=bookinstance.url) #{bookinstance.book.title} : #{bookinstance.imprint} -&nbsp;
+          a(href=bookinstance.url) #{bookinstance.book.title} : #{bookinstance.imprint}
           if bookinstance.status == "Available"
-            span.text-success #{bookinstance.status} 
+            span.text-success  - #{bookinstance.status} 
           else if bookinstance.status == "Maintenance"
-            span.text-danger #{bookinstance.status}
+            span.text-danger  - #{bookinstance.status}
           else 
-            span.text-warning #{bookinstance.status}
+            span.text-warning  - #{bookinstance.status}
 
           if bookinstance.status != "Available"
-            span (Due: #{bookinstance.due_back})
+            span &nbsp;(Due: #{bookinstance.due_back_formatted})
   
   else 
     p There are no copies of this book in the library.
