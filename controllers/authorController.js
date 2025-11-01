@@ -94,7 +94,20 @@ exports.author_create_post = [
     }
 
     // Data from form is valid
-    // Save and redirect to new author record 
+    // Check if Author already exists
+    const authorExists = await Author.findOne({
+      first_name: req.body.first_name,
+      family_name: req.body.family_name
+    })
+      .collation()
+      .exec()
+    if (authorExists) {
+      // Author exists, redirect to its detail page 
+      res.redirect(authorExists.url)
+      return
+    }
+
+    // Create new author. Save and redirect to new author record 
     await author.save()
     res.redirect(author.url)
   }
