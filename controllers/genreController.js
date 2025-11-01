@@ -1,7 +1,8 @@
 const Genre = require('../models/genre')
 const Book = require('../models/book')
+const { body, validationResult } = require('express-validator')
 
-// Display list of all Genre.
+// Display list of all Genre
 exports.genre_list = async (req, res, next) => {
   const allGenres = await Genre
     .find()
@@ -14,7 +15,7 @@ exports.genre_list = async (req, res, next) => {
   })
 }
 
-// Display detail page for a specific Genre.
+// Display detail page for a specific Genre
 exports.genre_detail = async (req, res, next) => {
   // Get details of genre and all associated books (in parallel)
   const [genre, booksInGenre] = await Promise.all([
@@ -36,15 +37,52 @@ exports.genre_detail = async (req, res, next) => {
   })
 }
 
-// Display Genre create form on GET.
+// Display Genre create form on GET
 exports.genre_create_get = async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Genre create GET");
+  res.render('genre_form', { title: 'Create Genre' })
 }
 
-// Handle Genre create on POST.
-exports.genre_create_post = async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Genre create POST");
-}
+// Handle Genre create on POST
+exports.genre_create_post = [
+  body('name', 'Genre name must contain at least 3 characters.')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+
+  // Process request after validation and sanitization
+  async (req, res, next) => {
+    // Extract the validation errors from the request
+    const errors = validationResult(req)
+
+    // Create a genre object with escaped and trimmed data
+    const genre = new Genre({ name: req.body.name })
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages
+      res.render('genre_form', {
+        title: 'Create Genre',
+        genre,
+        errors: errors.array()
+      })
+      return
+    }
+
+    // Data from form is valid
+    // Check if Genre already exists
+    const genreExists = await Genre.findOne({ name: req.body.name })
+      .collation({ locale: 'en', strength: 2 })
+      .exec()
+    if (genreExists) {
+      // Genre exists, redirect to its detail page
+      res.redirect(genreExists.url)
+      return
+    }
+
+    // Create new genre. Save and redirect to its detail page
+    await genre.save()
+    res.redirect(genre.url)
+  },
+]
 
 // Display Genre delete form on GET.
 exports.genre_delete_get = async (req, res, next) => {
