@@ -9,12 +9,12 @@ block content
   p #[strong Imprint: ] #{bookinstance.imprint} 
 
   p #[strong Status: ]
-    if bookinstance.status == 'Available'
-      p.text-success #{bookinstance.status}
-    else if bookinstance.status == 'Maintenance'
-      p.text-danger #{bookinstance.status}
-    else 
-      p.text-warning #{bookinstance.status} 
+  if bookinstance.status == 'Available'
+    p.text-success #{bookinstance.status}
+  else if bookinstance.status == 'Maintenance'
+    p.text-danger #{bookinstance.status}
+  else 
+    p.text-warning #{bookinstance.status} 
 
   if bookinstance.status != 'Available'
     p #[strong Due back: ] #{bookinstance.due_back_formatted}
