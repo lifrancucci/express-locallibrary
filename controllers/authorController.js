@@ -80,7 +80,7 @@ exports.author_create_post = [
       first_name: req.body.first_name, 
       family_name: req.body.family_name,
       date_of_birth: req.body.date_of_birth,
-      date_of_death: req.body.date_of_death,
+      date_of_death: req.body.date_of_death
     })
 
     if(!errors.isEmpty()) {

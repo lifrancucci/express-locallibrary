@@ -15,6 +15,7 @@ block content
     div.form-group 
       label(for='date_of_birth') Date of birth: 
       input(id='date_of_birth' class='form-control' type='date' name='date_of_birth' value=(author === undefined ? '' : author.date_of_birth_formatted))
+      //- p #{author.date_of_birth}
 
       label(for='date_of_death') Date of death: 
       input(id='date_of_death' class='form-control' type='date' name='date_of_death' value=(author === undefined ? '' : author.date_of_death_formatted))
