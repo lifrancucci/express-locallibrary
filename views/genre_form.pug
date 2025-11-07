@@ -7,7 +7,7 @@ block content
   form(method='POST')
   
     div.form-group 
-      label(for='name') Genre: 
+      label(for='name') Genre:
       input(id='name' class='form-control' type='text' placeholder='Fantasy, Poetry, etc.' name='name' required value=(genre === undefined ? '' : genre.name))
     
     button(class='btn btn-primary' type='submit' style='margin-top: 10px;') Submit

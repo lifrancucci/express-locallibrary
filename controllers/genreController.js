@@ -78,10 +78,10 @@ exports.genre_create_post = [
       return
     }
 
-    // Create new genre. Save and redirect to its detail page
+    // If Genre doesn't exists, create new genre. Save and redirect to its detail page
     await genre.save()
     res.redirect(genre.url)
-  },
+  }
 ]
 
 // Display Genre delete form on GET.
@@ -130,10 +130,63 @@ exports.genre_delete_post = async (req, res, next) => {
 
 // Display Genre update form on GET.
 exports.genre_update_get = async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Genre update GET");
+  // Get genre 
+  const genre = await Genre.findById(req.params.id).exec()
+
+  if (genre === null) {
+    // No results
+    const err = new Error('Genre not found.')
+    err.status = 404
+    return next(err)
+  }
+
+  res.render('genre_form', {
+    title: 'Update Genre',
+    genre
+  })
 }
 
 // Handle Genre update on POST.
-exports.genre_update_post = async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Genre update POST");
-}
+exports.genre_update_post = [
+  // Validate/sanitize fields 
+  body('name', 'Genre name must contain at least 3 characters.')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+
+  // Process request after validation and sanitization
+  async (req, res, next) => {
+    // Extract the validation errors from the request
+    const errors = validationResult(req)
+
+    // Create genre object with escaped and trimmed data
+    const genre = new Genre({ 
+      name: req.body.name,
+      _id: req.params.id 
+    })
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages
+      res.render('genre_form', {
+        title: 'Update Genre',
+        genre,
+        errors: errors.array()
+      })
+      return
+    }
+
+    // Data form is valid
+    const genreExists = await Genre.findOne({ name: req.body.name })
+      .collation({ locale: 'en', strength: 2 })
+      .exec()
+    if (genreExists) {
+      // Genre exists, redirect to its detail page
+      res.redirect(genreExists.url)
+      return
+    }
+
+    // If genre doesn't exists, update the record 
+    const updatedGenre = await Genre.findByIdAndUpdate(req.params.id, genre, {})
+    res.redirect(updatedGenre.url)
+  }
+]

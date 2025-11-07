@@ -176,7 +176,7 @@ exports.book_delete_post = async (req, res, next) => {
 
 // Display book update form on GET.
 exports.book_update_get = async (req, res, next) => {
-  // Get books, authors and genres for form (in parallel)
+  // Get book, authors and genres for form (in parallel)
   const [ book, allAuthors, allGenres ] = await Promise.all([
     Book.findById(req.params.id).populate('author').exec(),
     Author.find().sort({ family_name: 1 }).exec(),
