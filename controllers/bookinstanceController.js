@@ -112,7 +112,7 @@ exports.bookinstance_delete_get = async (req, res, next) => {
 
 // Handle BookInstance delete on POST.
 exports.bookinstance_delete_post = async (req, res, next) => {
-  // Get all bookinstances and books (parallel)
+  // Get all bookinstances
   const bookinstance = await BookInstance.findById(req.params.id).populate('book').exec()
 
   // Delete object and redirect to the list of book instances
