@@ -92,15 +92,14 @@ exports.book_create_post = [
     // Extract the validation errors from a request
     const errors = validationResult(req)
 
-    // Create a Book object with excaped and trimmed data
+    // Create a Book object with escaped and trimmed data
     const book = new Book({
       title: req.body.title,
       author: req.body.author,
       summary: req.body.summary,
       isbn: req.body.isbn,
-      genre: req.body.genre,
+      genre: req.body.genre
     })
-    console.log(book)
 
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/error messages
@@ -132,7 +131,6 @@ exports.book_create_post = [
     await book.save()
     res.redirect(book.url)
   } 
-
 ]
 
 // Display book delete form on GET.
@@ -182,7 +180,7 @@ exports.book_update_get = async (req, res, next) => {
   const [ book, allAuthors, allGenres ] = await Promise.all([
     Book.findById(req.params.id).populate('author').exec(),
     Author.find().sort({ family_name: 1 }).exec(),
-    Genre.find().sort({ name: 1 }).exec(),
+    Genre.find().sort({ name: 1 }).exec()
   ])
 
   if (book === null) {
@@ -203,7 +201,7 @@ exports.book_update_get = async (req, res, next) => {
     title: 'Update Book',
     book,
     authors: allAuthors,
-    genres: allGenres,
+    genres: allGenres
   })
 }
 
@@ -250,7 +248,6 @@ exports.book_update_post = [
       genre: typeof req.body.genre === 'undefined' ? [] : req.body.genre,
       _id: req.params.id // This is required, or a new ID will be assigned
     })
-    console.log(book)
 
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values / error messages
